@@ -22,8 +22,10 @@ const text = {
     },
     white: _colors.primary.base.white,
     disabled: _colors.primary.graylight[500],
-    placeholder: _colors.primary.graylight[500],
-    placeholdersubtle: _colors.primary.graylight[300],
+    placeholder: {
+      main: _colors.primary.graylight[500],
+      subtle: _colors.primary.graylight[300],
+    },
     brand: {
       primary: _colors.primary.brand[900],
       secondary: _colors.primary.brand[700],
@@ -55,8 +57,10 @@ const text = {
     },
     white: _colors.primary.base.white,
     disabled: _colors.primary.graydark[500],
-    placeholder: _colors.primary.graydark[400],
-    placeholdersubtle: _colors.primary.graydark[700],
+    placeholder: {
+      main: _colors.primary.graydark[400],
+      subtle: _colors.primary.graydark[700],
+    },
     brand: {
       primary: _colors.primary.graydark[50],
       secondary: _colors.primary.graydark[300],
@@ -203,7 +207,7 @@ const background = {
     active: _colors.primary.graylight[50],
     disabled: {
       main: _colors.primary.graylight[100],
-      suibtle: _colors.primary.graylight[50],
+      subtle: _colors.primary.graylight[50],
     },
     overlay: _colors.primary.graylight[950],
     brand: {
@@ -250,7 +254,7 @@ const background = {
     active: _colors.primary.graydark[800],
     disabled: {
       main: _colors.primary.graydark[800],
-      suibtle: _colors.primary.graydark[900],
+      subtle: _colors.primary.graydark[900],
     },
     overlay: _colors.primary.graydark[800],
     brand: {
