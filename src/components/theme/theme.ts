@@ -163,10 +163,8 @@ const Theme = createGlobalStyle<{ mode?: Theme }>`
   }
  
   #root {
-    display: grid;
-    place-content: center;
-
     isolation: isolate;
+    height: 100dvh;
   }
 `;
 

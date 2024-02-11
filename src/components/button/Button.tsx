@@ -1,68 +1,17 @@
 import { ComponentPropsWithoutRef, PropsWithChildren } from "react";
 import { styled, css } from "styled-components";
 
+import * as styles from "./styles";
 import border from "../styles/border";
-import focus from "../styles/focus";
 import typography from "../styles/typography";
-import { cssvar, vars } from "../theme/vars";
 import variant from "../utils/variant";
 
-type Variant = "primary" | "secondary" | "link";
-type Size = "sm" | "md" | "lg" | "xl" | "2xl";
-
 interface Props {
-  variant?: Variant;
-  size?: Size;
+  variant?: styles.Variant;
+  size?: styles.Size;
 }
 
-const color = variant<Variant>("$variant", {
-  primary: css`
-    background: ${cssvar(vars.button.primary.bg)};
-    border: 1px solid ${cssvar(vars.button.primary.border)};
-    color: ${cssvar(vars.button.primary.fg)};
-    &:hover {
-      background: ${cssvar(vars.button.primary.bghover)};
-      border: 1px solid ${cssvar(vars.button.primary.borderhover)};
-      color: ${cssvar(vars.button.primary.fghover)};
-    }
-    &:active {
-      background: ${cssvar(vars.button.primary.bg)};
-      border: 1px solid ${cssvar(vars.button.primary.border)};
-      box-shadow: ${focus.shadow.brandxs};
-      color: ${cssvar(vars.button.primary.fg)};
-    }
-  `,
-  secondary: css`
-    background: ${cssvar(vars.button.secondary.bg)};
-    border: 1px solid ${cssvar(vars.button.secondary.border)};
-    color: ${cssvar(vars.button.secondary.fg)};
-    &:hover {
-      background: ${cssvar(vars.button.secondary.bghover)};
-      border: 1px solid ${cssvar(vars.button.secondary.borderhover)};
-      color: ${cssvar(vars.button.secondary.fghover)};
-    }
-    &:active {
-      background: ${cssvar(vars.button.secondary.bg)};
-      border: 1px solid ${cssvar(vars.button.secondary.border)};
-      box-shadow: ${focus.shadow.grayxs};
-      color: ${cssvar(vars.button.secondary.fg)};
-    }
-  `,
-  link: css`
-    background: none;
-    border: none;
-    color: ${cssvar(vars.button.tertiarycolor.fg)};
-    padding: 0;
-    &:hover {
-      color: ${cssvar(vars.button.tertiarycolor.fghover)};
-    }
-    &:active {
-      color: ${cssvar(vars.button.tertiarycolor.fg)};
-    }
-  `,
-});
-
-const size = variant<Size>("$size", {
+const size = variant<styles.Size>("$size", {
   sm: css`
     gap: 4px;
     font-size: ${typography.text.sm};
@@ -98,7 +47,7 @@ const _Button = styled.button<StyledProps<Props>>`
   font-weight: 600;
 
   ${size};
-  ${color};
+  ${styles.color};
 `;
 
 export interface ButtonProps

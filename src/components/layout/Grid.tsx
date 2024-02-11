@@ -6,6 +6,7 @@ import widths from "../styles/widths";
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 100%;
   gap: 16px;
 
   width: 100%;
