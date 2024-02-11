@@ -137,7 +137,37 @@ const colors = {
   },
 };
 
+const button = {
+  primary: {
+    fg: "--button-color-primary-fg",
+    fghover: "--button-color-primary-fg-hover",
+    bg: "--button-color-primary-bg",
+    bghover: "--button-color-primary-bg-hover",
+    border: "--button-color-primary-border",
+    borderhover: "--button-color-primary-border-hover",
+  },
+  secondary: {
+    fg: "--button-color-secondary-fg",
+    fghover: "--button-color-secondary-fg-hover",
+    bg: "--button-color-secondary-bg",
+    bghover: "--button-color-secondary-bg-hover",
+    border: "--button-color-secondary-border",
+    borderhover: "--button-color-secondary-border-hover",
+  },
+  tertiary: {
+    fg: "--button-color-tertiary-fg",
+    fghover: "--button-color-tertiary-fg-hover",
+    bghover: "--button-color-tertiary-bg-hover",
+  },
+  tertiarycolor: {
+    fg: "--button-color-tertiarycolor-fg",
+    fghover: "--button-color-tertiarycolor-fg-hover",
+    bghover: "--button-color-tertiarycolor-bg-hover",
+  },
+};
+
 export const vars = {
+  button,
   colors,
 };
 

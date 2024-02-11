@@ -11,6 +11,7 @@ function setTheme(mode: Theme) {
   const border = colors.border[mode];
   const fg = colors.foreground[mode];
   const bg = colors.background[mode];
+  const button = colors.button[mode];
   return {
     /** Text */
     [vars.colors.text.primary.main]: text.primary.main,
@@ -100,6 +101,25 @@ function setTheme(mode: Theme) {
     [vars.colors.background.success.main]: bg.success.main,
     [vars.colors.background.success.secondary]: bg.success.secondary,
     [vars.colors.background.success.solid]: bg.success.solid,
+    /** Buttons */
+    [vars.button.primary.fg]: button.primary.fg,
+    [vars.button.primary.fghover]: button.primary.fghover,
+    [vars.button.primary.bg]: button.primary.bg,
+    [vars.button.primary.bghover]: button.primary.bghover,
+    [vars.button.primary.border]: button.primary.border,
+    [vars.button.primary.borderhover]: button.primary.borderhover,
+    [vars.button.secondary.fg]: button.secondary.fg,
+    [vars.button.secondary.fghover]: button.secondary.fghover,
+    [vars.button.secondary.bg]: button.secondary.bg,
+    [vars.button.secondary.bghover]: button.secondary.bghover,
+    [vars.button.secondary.border]: button.secondary.border,
+    [vars.button.secondary.borderhover]: button.secondary.borderhover,
+    [vars.button.tertiary.fg]: button.tertiary.fg,
+    [vars.button.tertiary.fghover]: button.tertiary.fghover,
+    [vars.button.tertiary.bghover]: button.tertiary.bghover,
+    [vars.button.tertiarycolor.fg]: button.tertiarycolor.fg,
+    [vars.button.tertiarycolor.fghover]: button.tertiarycolor.fghover,
+    [vars.button.tertiarycolor.bghover]: button.tertiarycolor.bghover,
   };
 }
 
@@ -132,13 +152,20 @@ const Theme = createGlobalStyle<{ mode?: Theme }>`
 
   body {
     background-color: ${cssvar(vars.colors.background.primary.main)};
+    color: ${cssvar(vars.colors.text.primary.main)};
     font-family: ${fonts.inter};
     font-size: 100%;
+    font-synthesis: none;
     line-height: 1.5;
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
  
   #root {
+    display: grid;
+    place-content: center;
+
     isolation: isolate;
   }
 `;

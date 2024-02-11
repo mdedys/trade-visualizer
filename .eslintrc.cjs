@@ -8,6 +8,7 @@ module.exports = {
     "plugin:import/typescript",
     "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
+    "plugin:storybook/recommended"
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs", "*.css", "*.svg", "vite.config.ts"],
   parser: "@typescript-eslint/parser",

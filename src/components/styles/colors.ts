@@ -284,11 +284,71 @@ const background = {
   },
 };
 
+const button = {
+  light: {
+    primary: {
+      fg: _colors.primary.base.white,
+      fghover: _colors.primary.base.white,
+      bg: _colors.primary.brand[600],
+      bghover: _colors.primary.brand[700],
+      border: _colors.primary.brand[600],
+      borderhover: _colors.primary.brand[700],
+    },
+    secondary: {
+      fg: _colors.primary.graylight[700],
+      fghover: _colors.primary.graylight[800],
+      bg: _colors.primary.base.white,
+      bghover: _colors.primary.graylight[50],
+      border: _colors.primary.graylight[300],
+      borderhover: _colors.primary.graylight[300],
+    },
+    tertiary: {
+      fg: _colors.primary.graylight[600],
+      fghover: _colors.primary.graylight[700],
+      bghover: _colors.primary.graylight[50],
+    },
+    tertiarycolor: {
+      fg: _colors.primary.brand[700],
+      fghover: _colors.primary.brand[800],
+      bghover: _colors.primary.brand[50],
+    },
+  },
+  dark: {
+    primary: {
+      fg: _colors.primary.base.white,
+      fghover: _colors.primary.base.white,
+      bg: _colors.primary.brand[600],
+      bghover: _colors.primary.brand[700],
+      border: _colors.primary.brand[600],
+      borderhover: _colors.primary.brand[700],
+    },
+    secondary: {
+      fg: _colors.primary.graydark[300],
+      fghover: _colors.primary.graydark[100],
+      bg: _colors.primary.graydark[900],
+      bghover: _colors.primary.graydark[800],
+      border: _colors.primary.graydark[700],
+      borderhover: _colors.primary.graydark[700],
+    },
+    tertiary: {
+      fg: _colors.primary.graydark[400],
+      fghover: _colors.primary.graydark[200],
+      bghover: _colors.primary.graydark[800],
+    },
+    tertiarycolor: {
+      fg: _colors.primary.graydark[300],
+      fghover: _colors.primary.graydark[100],
+      bghover: _colors.primary.graydark[800],
+    },
+  },
+};
+
 const colors = {
   text,
   border,
   foreground,
   background,
+  button,
 };
 
 export default colors;

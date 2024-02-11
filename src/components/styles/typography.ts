@@ -31,6 +31,10 @@ const typography = {
     },
   },
   text: {
+    "2xl": {
+      fontsize: pxToUnits(24),
+      lineheight: pxToUnits(32),
+    },
     xl: {
       fontsize: pxToUnits(20),
       lineheight: pxToUnits(30),
