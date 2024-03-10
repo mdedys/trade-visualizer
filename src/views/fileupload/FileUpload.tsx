@@ -74,6 +74,8 @@ interface FileUploadProps {
 export default function FileUpload(props: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+
+  // @ts-expect-error
   const [error, setError] = useState<string | null>(null);
 
   function onFileUploaded(files: FileList) {
@@ -131,6 +133,7 @@ export default function FileUpload(props: FileUploadProps) {
         ref={inputRef}
         multiple={props.multiple}
         onChange={() => {
+          console.log("onChange");
           if (inputRef.current?.files) {
             onFileUploaded(inputRef.current.files);
           }

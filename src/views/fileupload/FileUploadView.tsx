@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 
 import FileUpload from "./FileUpload";
 import Grid from "../../components/layout/Grid";
 import widths from "../../components/styles/widths";
 import Typography from "../../components/typography/Typography";
+import { read } from "../../data/parser";
+import Source from "../../data/source";
 
 const View = styled(Grid)`
   place-content: center;
@@ -23,6 +25,12 @@ const Container = styled.div`
 
 export default function FileUploadView() {
   const [file, setFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (file) {
+      read(file, Source.Questrade);
+    }
+  }, [file]);
 
   return (
     <View>
