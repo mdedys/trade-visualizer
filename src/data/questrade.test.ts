@@ -1,10 +1,11 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 
-import { QuestradeTrades } from "./mocks/trades";
+import { QuestradeTradeCSV, QuestradeTrades } from "./mocks/trades";
 import {
   ErrUnknownTradeAction,
   RawQuestradeRecord,
+  fromQuestrade,
   toTradeRecord,
 } from "./questrade";
 import { TradeAction, TradeKind } from "./trades";
@@ -60,6 +61,20 @@ describe("questrade", () => {
         assert.equal(record.action, action),
           assert.equal(record.symbol, symbol);
       });
+    });
+  });
+
+  describe("fromQuestrade", () => {
+    it("empty csv, should return no trades", () => {
+      const result = fromQuestrade("");
+      assert.equal(result.options.length, 0);
+      assert.equal(result.stocks.length, 0);
+    });
+
+    it("csv with records, should create trades", () => {
+      const result = fromQuestrade(QuestradeTradeCSV);
+      assert.equal(result.options.length, 2);
+      assert.equal(result.stocks.length, 1);
     });
   });
 });

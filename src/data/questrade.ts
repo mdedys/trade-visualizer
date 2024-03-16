@@ -151,6 +151,10 @@ export function fromQuestrade(text: string): Trades {
   // Parse text which will be in csv format and convert into JSON list of
   // RawQuestrade object
   const lines = text.split("\n").slice(1);
+  if (!lines) {
+    return { options: [], stocks: [] };
+  }
+
   const json = lines.map<RawQuestradeRecord>(next => {
     const items = next.split(",");
     return {
@@ -167,6 +171,8 @@ export function fromQuestrade(text: string): Trades {
       currency: items[10],
     };
   });
+
+  console.log(json);
 
   // Parse each raw record and convert into a TradeRecord
   const parsed = toTradeRecords(json);
