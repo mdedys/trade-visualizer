@@ -1,7 +1,17 @@
 import { DateTime } from "luxon";
 
 import { Currency } from "./currency";
-import { TradeAction, TradeKind, TradeRecord } from "./trading";
+import {
+  OptionTrade,
+  OptionType,
+  StockTrade,
+  TradeAction,
+  TradeKind,
+  TradeRecord,
+  TradeSummary,
+  Trades,
+  toTradeSummaries,
+} from "./trades";
 
 export type RawQuestradeRecord = {
   transactionDate: string;
@@ -57,16 +67,22 @@ function getKind(text: string): TradeKind {
 }
 
 /**
- * Tries to extract the trade ticker from the description of an option contract
+ * Tries to option metadata from the description of an option contract
  * @param text Trade description
  * @returns string | undefined
  */
-function extractTickerFromDescription(text: string): string | undefined {
+function extractOptionMetadataFromDescription(
+  text: string,
+): [string, OptionType, string, string] {
   // Ex: CALL CLF 07/16/21 23 CLEVELAND CLIFFS INC WE ACTED AS AGENT
   // The text follows this pattern for Option Contracts. Use
   // simple pattern of grabbing the second piece of text
   const values = text.split(" ");
-  return values[1];
+  const type = values[0] ?? "";
+  const symbol = values[1] ?? "";
+  const expiration = values[2] ?? "";
+  const strike = values[3] ?? "";
+  return [symbol, type as OptionType, expiration, strike];
 }
 
 /**
@@ -84,36 +100,57 @@ export function toTradeRecord(
 
   const kind = getKind(raw.description);
 
-  let symbol = raw.symbol;
+  const partial: Omit<TradeRecord, "kind" | "symbol"> = {
+    action,
+    currency: raw.currency as Currency,
+    price: Math.abs(parseFloat(raw.price)),
+    quantity: Math.abs(parseInt(raw.quantity)),
+    comission: Math.abs(parseFloat(raw.comission)),
+    gross: Math.abs(parseFloat(raw.gross)),
+    net: Math.abs(parseFloat(raw.net)),
+    createdAt: DateTime.fromMillis(new Date(raw.transactionDate).getTime()),
+    settledAt: DateTime.fromMillis(new Date(raw.settlementDate).getTime()),
+  };
+
   // The symbol isn't always the ticket when it comes to option contract.
   // Parse the description and extract out the ticker
   if (kind === TradeKind.Option) {
-    symbol = extractTickerFromDescription(raw.description) ?? raw.symbol;
+    const [symbol, type, expiration, strike] =
+      extractOptionMetadataFromDescription(raw.description) ?? raw.symbol;
+    const option: OptionTrade = {
+      ...partial,
+      kind,
+      symbol,
+      contract: {
+        type,
+        expiration,
+        strike,
+      },
+    };
+    return [option, null];
   }
 
-  return [
-    {
-      kind,
-      action,
-      symbol,
-      currency: raw.currency as Currency,
-      price: Math.abs(parseFloat(raw.price)),
-      quantity: Math.abs(parseInt(raw.quantity)),
-      comission: Math.abs(parseFloat(raw.comission)),
-      gross: Math.abs(parseFloat(raw.gross)),
-      net: Math.abs(parseFloat(raw.net)),
-      createdAt: DateTime.fromMillis(new Date(raw.transactionDate).getTime()),
-      settledAt: DateTime.fromMillis(new Date(raw.settlementDate).getTime()),
-    },
-    null,
-  ];
+  const stock: StockTrade = {
+    ...partial,
+    kind,
+    symbol: raw.symbol,
+  };
+  return [stock, null];
 }
 
-export function fromQuestrade(text: string) {
-  console.log(text.split("\n")[0]);
-  const lines = text.split("\n").slice(1);
+export function toTradeRecords(raw: RawQuestradeRecord[]): TradeRecord[] {
+  return raw.reduce<TradeRecord[]>((list, cur) => {
+    const [trade, error] = toTradeRecord(cur);
+    if (error || !trade) return list;
+    list.push(trade);
+    return list;
+  }, []);
+}
 
-  console.log(lines[1]);
+export function fromQuestrade(text: string): Trades {
+  // Parse text which will be in csv format and convert into JSON list of
+  // RawQuestrade object
+  const lines = text.split("\n").slice(1);
   const json = lines.map<RawQuestradeRecord>(next => {
     const items = next.split(",");
     return {
@@ -130,5 +167,16 @@ export function fromQuestrade(text: string) {
       currency: items[10],
     };
   });
-  console.log("json: ", json);
+
+  // Parse each raw record and convert into a TradeRecord
+  const parsed = toTradeRecords(json);
+  const summary = toTradeSummaries(parsed);
+  return {
+    options: summary.filter(
+      s => s.kind === TradeKind.Option,
+    ) as TradeSummary<OptionTrade>[],
+    stocks: summary.filter(
+      s => s.kind === TradeKind.Stock,
+    ) as TradeSummary<StockTrade>[],
+  };
 }
