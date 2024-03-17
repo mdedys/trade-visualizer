@@ -47,6 +47,7 @@ export interface StockTrade extends Trade {}
 export type TradeRecord = OptionTrade | StockTrade;
 
 export type TradeSummary<T = TradeRecord> = {
+  id: string;
   kind: TradeKind;
   symbol: string;
   records: T[];
@@ -79,6 +80,7 @@ export function toTradeSummaries(trades: TradeRecord[]): TradeSummary[] {
       return;
     }
     lookup[key] = {
+      id: key,
       kind: trade.kind,
       symbol: trade.symbol,
       records: [trade],
@@ -87,6 +89,7 @@ export function toTradeSummaries(trades: TradeRecord[]): TradeSummary[] {
 
   return Object.values(lookup).map<TradeSummary>(summary => {
     const s: TradeSummary = {
+      id: summary.id,
       kind: summary.kind,
       symbol: summary.symbol,
       records: summary.records.sort(

@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 
 import FileUpload from "./FileUpload";
 import Grid from "../../components/layout/Grid";
 import widths from "../../components/styles/widths";
 import Typography from "../../components/typography/Typography";
-import { read } from "../../data/parser";
-import Source from "../../data/source";
 
 const View = styled(Grid)`
   place-content: center;
+
+  margin: 0 auto;
   height: 100%;
 `;
 
@@ -23,15 +22,11 @@ const Container = styled.div`
   grid-column: 1 / -1;
 `;
 
-export default function FileUploadView() {
-  const [file, setFile] = useState<File | null>(null);
+interface FileUploadViewProps {
+  onFileUploaded(file: File): void;
+}
 
-  useEffect(() => {
-    if (file) {
-      read(file, Source.Questrade);
-    }
-  }, [file]);
-
+export default function FileUploadView(props: FileUploadViewProps) {
   return (
     <View>
       <Container>
@@ -47,9 +42,7 @@ export default function FileUploadView() {
           accept=".csv"
           info="Only CSV is currently supported"
           multiple={false}
-          onFileUploaded={file => {
-            setFile(file);
-          }}
+          onFileUploaded={props.onFileUploaded}
         />
       </Container>
     </View>
