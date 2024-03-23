@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from "@linaria/react";
 
 import breakpoints from "../styles/breakpoints";
 import widths from "../styles/widths";

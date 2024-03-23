@@ -1,10 +1,12 @@
-import Theme from "./components/theme/theme";
+import ThemeProvider from "./components/theme/ThemeProvider";
+import globals from "./globals";
 import Root from "./views/Root";
 
 function App() {
   return (
     <>
-      <Theme mode="light" />
+      <div className={globals} />
+      <ThemeProvider />
       <Root />
     </>
   );

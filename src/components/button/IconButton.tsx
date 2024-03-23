@@ -1,17 +1,17 @@
+import { cx, css } from "@linaria/core";
+import { styled } from "@linaria/react";
 import { ComponentPropsWithoutRef } from "react";
-import { styled, css } from "styled-components";
 
 import * as styles from "./styles";
 import Icons from "../icons/Icons";
 import border from "../styles/border";
-import variant from "../utils/variant";
 
 interface Props {
   variant?: Omit<styles.Variant, "link">;
   size?: styles.Size;
 }
 
-const size = variant<styles.Size>("$size", {
+const sizeVariant = {
   sm: css`
     padding: 0.5rem;
   `,
@@ -27,17 +27,14 @@ const size = variant<styles.Size>("$size", {
   "2xl": css`
     padding: 1rem;
   `,
-});
+};
 
-const Button = styled.button<StyledProps<Props>>`
+const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
 
   border-radius: ${border.md};
-
-  ${size};
-  ${styles.color};
 `;
 
 interface IconButtonProps extends Props, ComponentPropsWithoutRef<"button"> {
@@ -45,10 +42,17 @@ interface IconButtonProps extends Props, ComponentPropsWithoutRef<"button"> {
 }
 
 export default function IconButton(props: IconButtonProps) {
-  const { icon, variant, size, ...rest } = props;
+  const { className, icon, variant = "primary", size = "lg", ...rest } = props;
   const Icon = Icons[icon];
+
+  // @ts-expect-error - We are omitting link on purpose
+  const colorVariant = styles.color[variant];
+
   return (
-    <Button $variant={variant} $size={size} {...rest}>
+    <Button
+      className={cx(className, sizeVariant[size], colorVariant)}
+      {...rest}
+    >
       <Icon />
     </Button>
   );

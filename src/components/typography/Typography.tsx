@@ -1,5 +1,5 @@
+import { styled } from "@linaria/react";
 import { CSSProperties, PropsWithChildren } from "react";
-import { styled } from "styled-components";
 
 import typography from "../styles/typography";
 
@@ -13,19 +13,13 @@ interface Props {
   weight?: FontWeight;
 }
 
-function style(props: StyledProps<Props>) {
-  const { $size = "md", $variant = "text", $weight = "400" } = props;
-  const variant = typography[$variant];
-  const size = variant[$size];
-  return {
-    fontSize: size.fontsize.rem,
-    lineHeight: size.lineheight.rem,
-    fontWeight: $weight,
-  };
-}
+const variant = (props: StyledProps<Props>) =>
+  typography[props.$variant ?? "text"][props.$size ?? "md"];
 
 const Text = styled.span<StyledProps<Props>>`
-  ${props => style(props)}
+  font-size: ${props => variant(props).fontsize.rem};
+  font-weight: ${props => props.$weight ?? 400};
+  line-height: ${props => variant(props).lineheight.rem};
 `;
 
 interface TypographyProps extends Props {

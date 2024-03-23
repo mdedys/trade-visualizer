@@ -1,14 +1,12 @@
-import { css } from "styled-components";
+import { css } from "@linaria/core";
 
 import focus from "../styles/focus";
 import { cssvar, vars } from "../theme/vars";
-import variant from "../utils/variant";
 
 export type Variant = "primary" | "secondary" | "link";
-
 export type Size = "sm" | "md" | "lg" | "xl" | "2xl";
 
-export const color = variant<Variant>("$variant", {
+export const color = {
   primary: css`
     background: ${cssvar(vars.button.primary.bg)};
     border: 1px solid ${cssvar(vars.button.primary.border)};
@@ -53,4 +51,4 @@ export const color = variant<Variant>("$variant", {
       color: ${cssvar(vars.button.tertiarycolor.fg)};
     }
   `,
-});
+};

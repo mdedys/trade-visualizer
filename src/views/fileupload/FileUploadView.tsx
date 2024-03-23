@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from "@linaria/react";
 
 import FileUpload from "./FileUpload";
 import Grid from "../../components/layout/Grid";

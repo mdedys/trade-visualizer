@@ -1,5 +1,5 @@
+import { styled } from "@linaria/react";
 import { DragEvent, useRef, useState } from "react";
-import { styled } from "styled-components";
 
 import Button from "../../components/button/Button";
 import IconButton from "../../components/button/IconButton";
@@ -35,7 +35,7 @@ const DragOverlay = styled.div`
   width: 100%;
 `;
 
-const HiddenFileInput = styled.input.attrs({ type: "file" })`
+const HiddenFileInput = styled.input`
   display: none;
 `;
 
@@ -130,6 +130,7 @@ export default function FileUpload(props: FileUploadProps) {
         onDragOver={onDragOver}
       />
       <HiddenFileInput
+        type="file"
         ref={inputRef}
         multiple={props.multiple}
         onChange={() => {

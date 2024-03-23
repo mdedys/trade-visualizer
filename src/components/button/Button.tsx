@@ -1,17 +1,17 @@
+import { cx, css } from "@linaria/core";
+import { styled } from "@linaria/react";
 import { ComponentPropsWithoutRef, PropsWithChildren } from "react";
-import { styled, css } from "styled-components";
 
 import * as styles from "./styles";
 import border from "../styles/border";
 import typography from "../styles/typography";
-import variant from "../utils/variant";
 
 interface Props {
   variant?: styles.Variant;
   size?: styles.Size;
 }
 
-const size = variant<styles.Size>("$size", {
+const sizeVariant = {
   sm: css`
     gap: 4px;
     font-size: ${typography.text.sm};
@@ -37,7 +37,7 @@ const size = variant<styles.Size>("$size", {
     font-size: ${typography.text.lg};
     padding: 1rem 22px;
   `,
-});
+};
 
 const _Button = styled.button<StyledProps<Props>>`
   display: flex;
@@ -45,9 +45,6 @@ const _Button = styled.button<StyledProps<Props>>`
 
   border-radius: ${border.md};
   font-weight: 600;
-
-  ${size};
-  ${styles.color};
 `;
 
 export interface ButtonProps
@@ -57,7 +54,12 @@ export interface ButtonProps
 function Button(props: PropsWithChildren<ButtonProps>) {
   const { variant = "primary", size = "lg", children, ...rest } = props;
   return (
-    <_Button $variant={variant} $size={size} {...rest}>
+    <_Button
+      className={cx(props.className, sizeVariant[size], styles.color[variant])}
+      $variant={variant}
+      $size={size}
+      {...rest}
+    >
       {children}
     </_Button>
   );

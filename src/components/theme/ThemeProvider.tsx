@@ -1,12 +1,11 @@
-import { createGlobalStyle } from "styled-components";
+import { useLayoutEffect } from "react";
 
-import { vars, cssvar } from "./vars";
+import { vars } from "./vars";
 import colors from "../styles/colors";
-import { fonts } from "../styles/primitives";
 
 type Theme = "light" | "dark";
 
-function setTheme(mode: Theme) {
+function getTheme(mode: Theme) {
   const text = colors.text[mode];
   const border = colors.border[mode];
   const fg = colors.foreground[mode];
@@ -123,49 +122,27 @@ function setTheme(mode: Theme) {
   };
 }
 
-const Theme = createGlobalStyle<{ mode?: Theme }>`
+export default function ThemeProvider() {
+  useLayoutEffect(() => {
+    const vars = getTheme("light");
+    const content = Object.keys(vars).reduce<string>((str, key) => {
+      str += `${key}: ${vars[key]}; \n`;
+      return str;
+    }, "");
 
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+    const existing = window.document.querySelector("#theme");
+    if (existing) {
+      existing.parentElement?.removeChild(existing);
+    }
 
-  * {
-    margin: 0;
-  }
-
-  img, picture, video, canvas, svg {
-    display: block;
-    max-width: 100%;
-  }
-
-  input, button, textarea, select {
-    font: inherit;
-  }
-
-  p, h1, h2, h3, h4, h5, h6 {
-    overflow-wrap: break-word;
-  }
-
-  :root {
-    ${props => setTheme(props.mode ?? "light")}
-  }
-
-  body {
-    background-color: ${cssvar(vars.colors.background.primary.main)};
-    color: ${cssvar(vars.colors.text.primary.main)};
-    font-family: ${fonts.inter};
-    font-size: 100%;
-    font-synthesis: none;
-    line-height: 1.5;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
- 
-  #root {
-    isolation: isolate;
-    height: 100dvh;
-  }
-`;
-
-export default Theme;
+    const style = window.document.createElement("style");
+    style.id = "theme";
+    style.textContent = `
+      :root {
+        ${content}
+      }
+    `;
+    window.document.head.appendChild(style);
+  }, []);
+  return null;
+}
